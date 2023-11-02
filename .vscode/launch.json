@@ -1,0 +1,7 @@
+{
+    "name": "Debug Unittest",
+    "type": "cppdbg",
+    "request": "launch",
+    "program": "${workspaceFolder}/build/test_cstd",
+    "cwd": "${workspaceFolder}"
+}

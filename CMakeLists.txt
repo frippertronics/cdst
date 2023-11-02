@@ -19,13 +19,13 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC
-    -Og
+    -O0 -g
     -Wall -Werror
     -ffunction-sections -fdata-sections -fno-strict-aliasing
 )
 
 target_link_options(${PROJECT_NAME} PUBLIC
-    -Og
+    -O0 -g
 )
 
 # Compile tests
@@ -33,6 +33,10 @@ include(CTest)
 add_subdirectory(extern)
 add_executable(test_cstd
     tests/test_cdst.c
+)
+
+target_include_directories(test_cstd PRIVATE
+    src
 )
 
 target_link_libraries(test_cstd

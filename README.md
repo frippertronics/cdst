@@ -14,3 +14,17 @@ library and is referenced by the country's [ISO 3166-1 numeric](https://en.wikip
 - Ruby
 - GCC
 - 
+
+## Test timestamp generation
+
+Test timestamps for each country's transitions was generated using the following Python sequence:
+
+```python
+import pytz, datetime
+
+tz = "Europe/Berlin"
+num_entries = 30
+
+for dt in pytz.timezone(tz)._utc_transition_times[-num_entries]:
+    print(dt, dt.replace(tzinfo=datetime.timezone.utc).timestamp())
+```

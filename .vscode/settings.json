@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "time.h": "c"
+        "*.scons": "python",
+        "time.h": "c",
+        "cdst.h": "c",
+        "iso1366_numeric.h": "c"
     }
 }
