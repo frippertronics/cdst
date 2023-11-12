@@ -80,6 +80,17 @@ bool is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, uint32_
         case CUBA:
             transition = TRANSITION_RULE(MARCH, SUNDAY, 2, 0, NOVEMBER, SUNDAY, 1, 1, true);
             break;
+        case MOLDOVA:
+            transition = TRANSITION_RULE(MARCH, SUNDAY, 5, 2, OCTOBER, SUNDAY, 5, 3, true);
+            break;
+        case ISRAEL:
+            // Use the last Sunday and change to Friday later
+            transition = TRANSITION_RULE(MARCH, SUNDAY, 5, 2, OCTOBER, SUNDAY, 5, 2, true);
+            break;
+        case PALESTINE:
+            // Use the last Sunday and change to Friday later
+            transition = TRANSITION_RULE(APRIL, SATURDAY, 5, 2, OCTOBER, SUNDAY, 5, 2, true);
+            break;
         default:
             transition = (struct dst_transition_rules_t) {0};
             break;
@@ -116,10 +127,17 @@ bool is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, uint32_
     {
         uint8_t transition_dotm = (7 * (transition.begin_day_num - 1)) + 1; // Week offset + DOTM starts at 1
         transition_dotm += (transition.begin_day < first_dotw) ? 7 - transition.begin_day - first_dotw : transition.begin_day - first_dotw;
+
         if (transition_dotm > days_of_month)
         {
             transition_dotm -= 7;
-        } 
+        }
+        
+        if ((enum iso1366_numeric_e) iso1366_country_numeric_id == ISRAEL)
+        {
+            transition_dotm -= 2;
+        }
+
         if (curr_dotm < transition_dotm)
         {
             is_dst = false;
@@ -140,7 +158,12 @@ bool is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, uint32_
         if (transition_dotm > days_of_month)
         {
             transition_dotm -= 7;
-        } 
+        }
+
+        if ((enum iso1366_numeric_e) iso1366_country_numeric_id == PALESTINE)
+        {
+            transition_dotm -= 1;
+        }
 
         if (curr_dotm < transition_dotm)
         {
@@ -148,15 +171,8 @@ bool is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, uint32_
         }
         else if (curr_dotm == transition_dotm)
         {
-            if (transition.is_local)
-            {
-                // The current time is offset by 1 hour due to DST. On transition, the can be both DST and not.
-                is_dst = (((curr_hour + 1) < transition.end_hour) && (curr_hour < transition.end_hour));
-            }
-            else
-            {
-                is_dst = (curr_hour < transition.end_hour);
-            }
+            // The current time is offset by 1 hour due to DST when local time.
+            is_dst = (transition.is_local) ? ((curr_hour + 1) < transition.end_hour) : (curr_hour < transition.end_hour);
         }
         else
         {
