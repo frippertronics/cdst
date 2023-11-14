@@ -9,6 +9,7 @@ project(
 
 set(PROJ_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_BINARY_DIR build)
+option(COMPILE_UNITTEST "Compile and run unit tests" ON)
 
 # Compile main library
 add_library(${PROJECT_NAME} STATIC src/cdst.c)
@@ -28,20 +29,22 @@ target_link_options(${PROJECT_NAME} PUBLIC
     -O0 -g
 )
 
-# Compile tests
-include(CTest)
-add_subdirectory(extern)
-add_executable(test_cstd
-    tests/test_cdst.c
-)
+if(${COMPILE_UNITTEST})
+    # Compile tests
+    include(CTest)
+    add_subdirectory(extern)
+    add_executable(test_cstd
+        tests/test_cdst.c
+    )
 
-target_include_directories(test_cstd PRIVATE
-    src
-)
+    target_include_directories(test_cstd PRIVATE
+        src
+    )
 
-target_link_libraries(test_cstd
-    ${PROJECT_NAME}
-    unity
-)
+    target_link_libraries(test_cstd
+        ${PROJECT_NAME}
+        unity
+    )
 
-add_test(test_suite test_cstd)
+    add_test(test_suite test_cstd)
+endif()
