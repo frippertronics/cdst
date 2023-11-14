@@ -9,6 +9,10 @@ As DST is a binary state, the library features one function that checks if the c
 32-bit unsigned UNIX time, is within the specified country's DST window. The window is stored as part of the
 library and is referenced by the country's [ISO 3166-1 numeric](https://en.wikipedia.org/wiki/ISO_3166-1_numeric) code.
 
+Note: The library doesn't take into account local variations inside a country, like Hawaii which doesn't have DST.
+The primary target for this library is embedded devices which don't have access to external clock sources, such as
+online `tz`-databases.
+
 # Requirements
 
 - GCC

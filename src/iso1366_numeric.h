@@ -234,7 +234,7 @@ enum iso1366_numeric_e
     TUVALU = 798,
     UGANDA = 800,
     UKRAINE = 804,
-    NORTH = 807,
+    NORTH_MACEDONIA = 807,
     EGYPT = 818,
     UK = 826,
     GUERNSEY = 831,

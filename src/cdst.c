@@ -85,17 +85,68 @@ bool cdst_is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, ui
     // Get DST rules
     bool is_dst = false;
     bool opposite_transition = false;
-    struct dst_transition_rules_t transition;
+    struct dst_transition_rules_t transition = {0};
     switch ((enum iso1366_numeric_e)iso1366_country_numeric_id)
     {
-    case GERMANY:
-        transition = TRANSITION_RULE(MARCH, SUNDAY, 5, 1, OCTOBER, SUNDAY, 5, 1, true);
-        break;
+    case BAHAMAS:
+    case BERMUDA:
+    case CANADA:
+    case HAITI:
+    case MEXICO:
+    case SAINT_PIERRE_AND_MIQUELON:
+    case TURKS_AND_CAICOS_ISLANDS:
     case USA:
         transition = TRANSITION_RULE(MARCH, SUNDAY, 2, 2, NOVEMBER, SUNDAY, 1, 2, false);
         break;
     case CUBA:
         transition = TRANSITION_RULE(MARCH, SUNDAY, 2, 0, NOVEMBER, SUNDAY, 1, 1, false);
+        break;
+    case ALBANIA:
+    case ANDORRA:
+    case BOSNIA_AND_HERZEGOVINA:
+    case FAROE_ISLANDS:
+    case GIBRALTAR:
+    case GREENLAND:
+    case GUERNSEY:
+    case ISLE_OF_MAN:
+    case JERSEY:
+    case LIECHTENSTEIN:
+    case MONACO:
+    case MONTENEGRO:
+    case NORTH_MACEDONIA:
+    case NORWAY:
+    case SAN_MARINO:
+    case SERBIA:
+    case UKRAINE:
+    case UK:
+    case AUSTRIA:
+    case BELGIUM:
+    case BULGARIA:
+    case CROATIA:
+    case CYPRUS:
+    case CZECHIA:
+    case DENMARK:
+    case ESTONIA:
+    case FINLAND:
+    case FRANCE:
+    case GERMANY:
+    case GREECE:
+    case HUNGARY:
+    case IRELAND:
+    case ITALY:
+    case LATVIA:
+    case LITHUANIA:
+    case LUXEMBOURG:
+    case MALTA:
+    case NETHERLANDS:
+    case POLAND:
+    case PORTUGAL:
+    case ROMANIA:
+    case SLOVAKIA:
+    case SLOVENIA:
+    case SPAIN:
+    case SWEDEN:
+        transition = TRANSITION_RULE(MARCH, SUNDAY, 5, 1, OCTOBER, SUNDAY, 5, 1, true);
         break;
     case MOLDOVA:
         transition = TRANSITION_RULE(MARCH, SUNDAY, 5, 2, OCTOBER, SUNDAY, 5, 3, false);
@@ -134,6 +185,7 @@ bool cdst_is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, ui
         opposite_transition = true;
         break;
     default:
+        // All other countries don't observe DST
         return false;
         break;
     }
