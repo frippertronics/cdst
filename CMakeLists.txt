@@ -9,38 +9,35 @@ project(
 
 set(PROJ_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_BINARY_DIR build)
-option(COMPILE_UNITTEST "Compile and run unit tests" ON)
+option(BUILD_UNITTEST "Compile unit tests" ON)
 
-# Compile main library
+# Compile CDST library
 add_library(${PROJECT_NAME} STATIC src/cdst.c)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
-
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-
-)
-
-target_compile_options(${PROJECT_NAME} PUBLIC
+target_compile_options(${PROJECT_NAME} PRIVATE
     -O0 -g
     -Wall -Werror
     -ffunction-sections -fdata-sections -fno-strict-aliasing
+    "$<$<CONFIG:Debug>:-O0;-g>"
+    "$<$<CONFIG:Release>:-O2>"
 )
 
-target_link_options(${PROJECT_NAME} PUBLIC
-    -O0 -g
-)
-
-if(${COMPILE_UNITTEST})
+if(${BUILD_UNITTEST})
     # Compile tests
     include(CTest)
     add_subdirectory(extern)
+
     add_executable(test_cstd
         tests/test_cdst.c
     )
-
     target_include_directories(test_cstd PRIVATE
         src
     )
-
+    target_compile_options(test_cstd PRIVATE
+        -O0 -g
+        -Wall -Werror
+        -ffunction-sections -fdata-sections -fno-strict-aliasing
+    )
     target_link_libraries(test_cstd
         ${PROJECT_NAME}
         unity

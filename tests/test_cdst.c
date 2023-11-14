@@ -49,7 +49,7 @@ void test_germany_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, 0, test_times[i]);
+        bool ret = cdst_is_dst(test_country, 0, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -63,7 +63,7 @@ void test_usa_est_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, -5, test_times[i]);
+        bool ret = cdst_is_dst(test_country, -5, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -77,7 +77,7 @@ void test_cuba_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, -5, test_times[i]);
+        bool ret = cdst_is_dst(test_country, -5, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -91,7 +91,7 @@ void test_moldova_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, 2, test_times[i]);
+        bool ret = cdst_is_dst(test_country, 2, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -105,7 +105,7 @@ void test_israel_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, 2, test_times[i]);
+        bool ret = cdst_is_dst(test_country, 2, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -119,7 +119,7 @@ void test_lebanon_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, 2, test_times[i]);
+        bool ret = cdst_is_dst(test_country, 2, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -133,7 +133,7 @@ void test_egypt_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, 2, test_times[i]);
+        bool ret = cdst_is_dst(test_country, 2, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -147,7 +147,7 @@ void test_palestine_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, 2, test_times[i]);
+        bool ret = cdst_is_dst(test_country, 2, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -161,7 +161,7 @@ void test_paraguay_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, -4, test_times[i]);
+        bool ret = cdst_is_dst(test_country, -4, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -175,7 +175,7 @@ void test_chile_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, -4, test_times[i]);
+        bool ret = cdst_is_dst(test_country, -4, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -189,7 +189,7 @@ void test_australia_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, 10, test_times[i]);
+        bool ret = cdst_is_dst(test_country, 10, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }
@@ -203,7 +203,7 @@ void test_new_zealand_2023(void)
 
     for(int i = 0; i < ARR_LEN(test_times); i++)
     {
-        bool ret = is_dst(test_country, 12, test_times[i]);
+        bool ret = cdst_is_dst(test_country, 12, test_times[i]);
 
         TEST_ASSERT_EQUAL(expected[i], ret);
     }

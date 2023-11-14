@@ -11,9 +11,9 @@ library and is referenced by the country's [ISO 3166-1 numeric](https://en.wikip
 
 # Requirements
 
-- Ruby
 - GCC
-- 
+- CMake
+- Ruby (testing only)
 
 ## Test timestamp generation
 
