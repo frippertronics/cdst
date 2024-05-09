@@ -56,38 +56,36 @@ struct dst_transition_rules_t
 static inline uint8_t get_days_of_month(uint16_t year, enum time_month month)
 {
     uint8_t days;
-    switch (month)
+    if (month == FEBRUARY)
     {
-    case FEBRUARY:
-        days = ((year % 4) == 0) ? 28 : 27;
-        break;
-    case JANUARY:
-    case MARCH:
-    case MAY:
-    case JULY:
-    case AUGUST:
-    case OCTOBER:
-    case DECEMBER:
-        days = 31;
-        break;
-    case APRIL:
-    case JUNE:
-    case SEPTEMBER:
-    case NOVEMBER:
+        if ((year % 100) == 0)
+        {
+            days = ((year % 400) == 0) ? 28 : 27;
+        }
+        else
+        {
+            days = ((year % 4) == 0) ? 28 : 27;
+        }
+    }
+    else if ((month == APRIL) || (month == JUNE) || (month == SEPTEMBER) || (month == NOVEMBER))
+    {
         days = 30;
     }
-
+    else
+    {
+        days = 31;
+    }
     return days;
 }
 
 bool cdst_is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, uint32_t curr_epoch_time)
 {
-    // Get DST rules
     bool is_dst = false;
     bool opposite_transition = false;
     struct dst_transition_rules_t transition = {0};
     switch ((enum iso1366_numeric_e)iso1366_country_numeric_id)
     {
+#ifndef DISABLE_AMERICA_RULES
     case BAHAMAS:
     case BERMUDA:
     case CANADA:
@@ -101,6 +99,18 @@ bool cdst_is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, ui
     case CUBA:
         transition = TRANSITION_RULE(MARCH, SUNDAY, 2, 0, NOVEMBER, SUNDAY, 1, 1, false);
         break;
+    case PARAGUAY:
+        transition = TRANSITION_RULE(MARCH, SUNDAY, 4, 0, OCTOBER, SUNDAY, 1, 0, false);
+        opposite_transition = true;
+        break;
+    case CHILE:
+        // Chile is officially UTC-4/UTC-3 for start and end
+        transition = TRANSITION_RULE(APRIL, SATURDAY, 1, 24, SEPTEMBER, SATURDAY, 1, 24, true);
+        curr_epoch_time -= (3 * HOUR_S);
+        opposite_transition = true;
+        break;
+#endif
+#ifndef DISABLE_EUROPE_RULES
     case ALBANIA:
     case ANDORRA:
     case BOSNIA_AND_HERZEGOVINA:
@@ -151,30 +161,26 @@ bool cdst_is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, ui
     case MOLDOVA:
         transition = TRANSITION_RULE(MARCH, SUNDAY, 5, 2, OCTOBER, SUNDAY, 5, 3, false);
         break;
+#endif
+#ifndef DISABLE_ASIA_RULES
     case ISRAEL:
         // Use the last Sunday and change to Friday later
         transition = TRANSITION_RULE(MARCH, SUNDAY, 5, 2, OCTOBER, SUNDAY, 5, 2, false);
-        break;
-    case LEBANON:
-        transition = TRANSITION_RULE(MARCH, THURSDAY, 5, 0, OCTOBER, SUNDAY, 5, 0, false);
-        break;
-    case EGYPT:
-        transition = TRANSITION_RULE(APRIL, FRIDAY, 5, 0, OCTOBER, THURSDAY, 5, 24, false);
         break;
     case PALESTINE:
         // Use the last Sunday and change to Friday later
         transition = TRANSITION_RULE(APRIL, SATURDAY, 5, 2, OCTOBER, SUNDAY, 5, 2, false);
         break;
-    case PARAGUAY:
-        transition = TRANSITION_RULE(MARCH, SUNDAY, 4, 0, OCTOBER, SUNDAY, 1, 0, false);
-        opposite_transition = true;
+    case LEBANON:
+        transition = TRANSITION_RULE(MARCH, THURSDAY, 5, 0, OCTOBER, SUNDAY, 5, 0, false);
         break;
-    case CHILE:
-        // Chile is officially UTC-4/UTC-3 for start and end
-        transition = TRANSITION_RULE(APRIL, SATURDAY, 1, 24, SEPTEMBER, SATURDAY, 1, 24, true);
-        curr_epoch_time -= (3 * HOUR_S);
-        opposite_transition = true;
+#endif
+#ifndef DISABLE_AFRICA_RULES
+    case EGYPT:
+        transition = TRANSITION_RULE(APRIL, FRIDAY, 5, 0, OCTOBER, THURSDAY, 5, 24, false);
         break;
+#endif
+#ifndef DISABLE_OCEANIA_RULES
     case AUSTRALIA:
         transition = TRANSITION_RULE(APRIL, SUNDAY, 1, 3, OCTOBER, SUNDAY, 1, 2, false);
         opposite_transition = true;
@@ -184,6 +190,7 @@ bool cdst_is_dst(uint16_t iso1366_country_numeric_id, int8_t base_utc_offset, ui
         curr_epoch_time += (12 * HOUR_S);
         opposite_transition = true;
         break;
+#endif
     default:
         // All other countries don't observe DST
         return false;
